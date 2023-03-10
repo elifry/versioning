@@ -2,7 +2,7 @@ name: Versioning Package
 
 on:
   push:
-  branches: [ main ]
+    branches: [ main ]
 
 jobs:
   build-n-publish:
