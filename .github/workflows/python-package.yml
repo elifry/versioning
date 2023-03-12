@@ -20,7 +20,7 @@ jobs:
           pip install flake8   
       - name: Get latest tag
         run: |
-          latest_tag=$(curl -s "https://api.github.com/repos/${{ github.repository }}/tags" | jq -r '.[] | .name + " " + .commit.date' | sort -k2 -r | head -n 1 | cut -d ' ' -f 1)
+          latest_tag=$(curl -s "https://api.github.com/repos/${{ github.repository }}/tags" | jq -r '.[] | .name + " " + .commit.date' | sort -k1 -rV | head -n 1 | cut -d ' ' -f 1)
           echo "LATEST_TAG=${latest_tag}" >> $GITHUB_ENV
       - name: Get current date
         run: |
