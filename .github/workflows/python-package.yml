@@ -1,7 +1,9 @@
-name: Versioning Package
+name: Versioning Package build and publish
 
 on:
   push:
+    branches: [ main ]
+  pull_request:
     branches: [ main ]
 
 jobs:
@@ -20,8 +22,8 @@ jobs:
           pip install flake8   
       - name: Get latest tag
         run: |
-          # echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-          echo "LATEST_TAG=$(git for-each-ref --format="%(refname:short)" --sort=-authordate --count=1 refs/tags)" >> $GITHUB_ENV
+          latest_tag=$(curl -s "https://api.github.com/repos/${{ github.repository }}/tags" | jq -r '.[] | .name + " " + .commit.date' | sort -k2 -r | head -n 1 | cut -d ' ' -f 1)
+          echo "LATEST_TAG=${latest_tag}" >> $GITHUB_ENV
       - name: Get current date
         run: |
           echo "CURRENT_DATE=$(date +%Y.%m.%d)" >> $GITHUB_ENV
