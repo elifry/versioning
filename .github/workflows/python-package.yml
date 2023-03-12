@@ -18,17 +18,29 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install flake8   
-      - name: Get version from GitVersion
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.7
-        with:
-          useConfigFile: true
-          configFilePath: GitVersion.yml
+      - name: Get latest tag
+        id: latest_tag
+        run: |
+          echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+      - name: Get current date
+        id: current_date
+        run: |
+          echo "::set-output name=date::$(date +%Y.%m.%d)"
+      - name: Increment patch number
+        id: increment_patch
+        run: |
+          patch=$(echo "${{ steps.latest_tag.outputs.tag }}" | cut -d '.' -f 4)
+          patch=$((patch+1))
+          echo "::set-output name=patch::${patch}"
+      - name: Set new tag
+        id: new_tag
+        run: |
+          new_tag="${{ steps.current_date.outputs.date }}.${{ steps.increment_patch.outputs.patch }}"
+          echo "::set-output name=tag::${new_tag}"
+          git tag "${new_tag}"
       - name: Set version in setup.py
         run: |
-          sed -i "s/version='.*'/version='${{ steps.gitversion.outputs.semVer }}'/g" setup.py
-      - name: Increment tag number
-        run: bash increment_tag.sh
+          sed -i "s/version='.*'/version='${{ steps.new_tag.outputs.tag }}'/g" setup.py
       - name: Build binary wheel and a source tarball
         run: python setup.py sdist
       - name: Publish distribution to Test PyPI
