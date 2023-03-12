@@ -19,28 +19,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8   
       - name: Get latest tag
-        id: latest_tag
         run: |
-          echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+          echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
       - name: Get current date
-        id: current_date
         run: |
-          echo "::set-output name=date::$(date +%Y.%m.%d)"
+          echo "CURRENT_DATE=$(date +%Y.%m.%d)" >> $GITHUB_ENV
       - name: Increment patch number
-        id: increment_patch
         run: |
-          patch=$(echo "${{ steps.latest_tag.outputs.tag }}" | cut -d '.' -f 4)
+          patch=$(echo "${LATEST_TAG}" | cut -d '.' -f 4)
           patch=$((patch+1))
-          echo "::set-output name=patch::${patch}"
+          echo "PATCH=${patch}" >> $GITHUB_ENV
       - name: Set new tag
-        id: new_tag
         run: |
-          new_tag="${{ steps.current_date.outputs.date }}.${{ steps.increment_patch.outputs.patch }}"
-          echo "::set-output name=tag::${new_tag}"
+          new_tag="${CURRENT_DATE}.${PATCH}"
+          echo "NEW_TAG=${new_tag}" >> $GITHUB_ENV
           git tag "${new_tag}"
+      - name: Push new tag
+        run: |
+          git push origin "${NEW_TAG}"
       - name: Set version in setup.py
         run: |
-          sed -i "s/version='.*'/version='${{ steps.new_tag.outputs.tag }}'/g" setup.py
+          sed -i "s/version='.*'/version='${NEW_TAG}'/g" setup.py
       - name: Build binary wheel and a source tarball
         run: python setup.py sdist
       - name: Push new tag
