@@ -42,4 +42,4 @@ echo "New tag: $newTag"
 git tag $newTag
 
 # Replace the version in __init__.py with the new tag
-sed -i "s/__version__ = .*/__version__ = \"$newTag\"/" mylib/__init__.py
+sed -i "s/__version__ = .*/__version__ = \"$newTag\"/" versioning/__init__.py
