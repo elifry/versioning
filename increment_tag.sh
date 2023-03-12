@@ -3,17 +3,19 @@
 # Get the latest tag
 latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
 
-# Get the latest commit hash
-latestCommit=$(git rev-parse HEAD)
+# # Get the latest commit hash
+# latestCommit=$(git rev-parse HEAD)
 
-# Get the latest commit hash with a tag
-taggedCommit=$(git rev-list -n 1 $latestTag)
+# # Get the latest commit hash with a tag
+# taggedCommit=$(git rev-list -n 1 $latestTag)
 
-# Check if the latest commit has a tag
-if [ $latestCommit == $taggedCommit ]; then
-    echo "No new commits since last tag."
-    exit 0
-fi
+# # Check if the latest commit has a tag
+# if [ $latestCommit == $taggedCommit ]; then
+#     echo "No new commits since last tag."
+#     exit 0
+# fi
+
+echo $latestTag
 
 # Split the tag into an array by dot
 tagArray=(${latestTag//./ })
