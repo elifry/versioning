@@ -30,4 +30,4 @@ print(scheme.validate(version)) # True
 ```
 
 ## License
-This project is licensed under the BSD License. See the LICENSE file for more details.
+This project is licensed under the BSD 2-clause License. See the LICENSE file for more details.
