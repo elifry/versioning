@@ -43,8 +43,8 @@ jobs:
           sed -i "s/version='.*'/version='${{ steps.new_tag.outputs.tag }}'/g" setup.py
       - name: Build binary wheel and a source tarball
         run: python setup.py sdist
-      - name: Push tag
-        run: git push --tags
+      - name: Push new tag
+        run: git push origin "${{ steps.new_tag.outputs.tag }}"
       - name: Publish distribution to Test PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
