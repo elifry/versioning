@@ -1,8 +1,9 @@
 import setuptools
+from versioning import __version__
 
 setuptools.setup(
     name="elifry_versioning",
-    version="{version}",
+    version=__version__,
     author="Eli Fry",
     description="Format version numbers, build strings for various uses, classes for versioning schemes",
     packages=setuptools.find_packages(),
