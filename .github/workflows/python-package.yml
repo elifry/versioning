@@ -37,16 +37,14 @@ jobs:
           new_tag="${CURRENT_DATE}.${PATCH}"
           echo "NEW_TAG=${new_tag}" >> $GITHUB_ENV
           git tag "${new_tag}"
-      - name: Push new tag
-        run: |
-          git push origin "${NEW_TAG}"
       - name: Set version in setup.py
         run: |
           sed -i "s/version='.*'/version='${NEW_TAG}'/g" setup.py
       - name: Build binary wheel and a source tarball
         run: python setup.py sdist
       - name: Push new tag
-        run: git push origin "${{ steps.new_tag.outputs.tag }}"
+        run: |
+          git push origin "${NEW_TAG}"
       - name: Publish distribution to Test PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
