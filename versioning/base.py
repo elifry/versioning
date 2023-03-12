@@ -22,7 +22,7 @@ class Version():
             _additional = str(self.additional).zfill(self.paddings["additionalPad"])
             return f"{_primary}.{_secondary}.{_additional}.{_patch}"
     
-    def bump_primary(self)
+    def bump_primary(self):
         self.primary = self.primary + 1
         self.secondary = 0
         if not (self.additional is None):
@@ -30,7 +30,7 @@ class Version():
         self.patch = 0
         return self
 
-    def bump_secondary(self)
+    def bump_secondary(self):
         self.secondary = self.secondary + 1
         if not (self.additional is None):
             self.additional = 0
