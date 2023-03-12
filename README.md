@@ -8,9 +8,12 @@ To install this module, run the following command:
 
 ```bash
 pip install elifry_versioning
-Usage
+```
+
+## Usage
 To use this module, import it in your Python code and call the functions or classes that you need. For example:
 
+```python
 import elifry_versioning as ev
 
 # Format a version number as a string
@@ -24,5 +27,7 @@ print(version.build_github_release("elifry", "elifry_versioning")) # https://git
 scheme = ev.SemanticVersioning()
 print(scheme.name) # Semantic Versioning
 print(scheme.validate(version)) # True
-License
+```
+
+## License
 This project is licensed under the BSD License. See the LICENSE file for more details.
